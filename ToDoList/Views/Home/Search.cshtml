@@ -1,0 +1,53 @@
+﻿@model IEnumerable<ToDoList.Models.TaskList>
+
+<h1>Search</h1>
+
+<form method="post">
+    <h2>Task: </h2>
+    <input type="text" name="searchWord" required />
+
+    <input type="submit" />
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ItemDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DueDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Complete)
+            </th>
+            <th>
+               Delete
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ItemDescription)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DueDate)
+                </td>
+                @{
+                    if (item.Complete)
+                    {
+                        <td><form asp-action="CompleteTask"><input type="hidden" name="id" value="@item.Id" /><input type="hidden" name="isComplete" value="false" /><button class="btn-secondary">Completed</button></form></td>
+                    }
+                    else
+                    {
+                        <td><form asp-action="CompleteTask"><input type="hidden" name="id" value="@item.Id" /><input type="hidden" name="isComplete" value="true" /><button class="btn-info">Mark Complete</button></form></td>
+                    }
+                }
+                <td><form asp-action="Delete"><input type="hidden" name="id" value="@item.Id" /><button class="btn-danger">Delete</button></form></td>
+            </tr>
+        }
+    </tbody>
+</table>

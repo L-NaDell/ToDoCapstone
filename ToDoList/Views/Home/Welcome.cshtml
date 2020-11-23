@@ -1,0 +1,46 @@
+﻿@model List<ToDoList.Models.TaskList>
+
+<h1 style="text-align: center;">@User.Identity.Name.Split("@")[0]'s Tasks</h1>
+
+<table style="margin: 0 auto;" border="1">
+    @{
+        if (Model.Any())
+        {
+        <tr>
+            <th style="text-align: center;">Task</th>
+            <th style="text-align: center;">Due Date</th>
+            <th style="text-align: center;">Complete</th>
+            <th style="text-align: center;">Delete</th>
+
+        </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td style="text-align: center; padding: 2px 7px 2px 7px">@Html.DisplayFor(model => item.ItemDescription)</td>
+                    <td style="text-align: center; padding: 2px 7px 2px 7px">@Html.DisplayFor(model => item.DueDate)</td>
+                    @{
+                        if (item.Complete)
+                        {
+                            <td style="text-align: center;"><form asp-action="CompleteTask"><input type="hidden" name="id" value="@item.Id" /><input type="hidden" name="isComplete" value="false" /><button class="btn-secondary">Completed</button></form></td>
+                        }
+                        else
+                        {
+                            <td style="text-align: center; padding: 2px 7px 2px 7px;"><form asp-action="CompleteTask"><input type="hidden" name="id" value="@item.Id" /><input type="hidden" name="isComplete" value="true" /><button class="btn-info">Mark Complete</button></form></td>
+                        }
+                    }
+                    <td style="text-align: center; padding: 2px 7px 2px 7px;"><form asp-action="Delete"><input type="hidden" name="id" value="@item.Id" /><button class="btn-danger">Delete</button></form></td>
+
+                </tr>
+            }
+        }
+        else
+        {
+            <h4 style="text-align: center;">You have no tasks</h4>
+        }
+    }
+</table>
+<hr />
+<p style="text-align: center;">
+    <a style="margin: 20px;" asp-action="Search">Search Tasks</a>
+    <a style="margin: 20px;" asp-action="AddTask">Add Task</a>
+</p>
